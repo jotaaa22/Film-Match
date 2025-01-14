@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>FILMATCH</h1>
+
+    <!-- Formulario para buscar películas por plataforma -->
+    <form method="POST">
+        <label for="plataforma">Elige tu plataforma favorita:</label>
+        <select name="plataforma" id="plataforma">
+            <option value="">--Seleccionar--</option>
+            <option value="Netflix">Netflix</option>
+            <option value="Hulu">Hulu</option>
+            <option value="Prime Video">Prime Video</option>
+            <option value="Disney+">Disney+</option>
+        </select>
+        <button type="submit">Consultar</button>
+    </form>
+
+    <!-- Formulario para buscar películas por título -->
+    <form method="POST">
+        <label for="titulo">Busca una película por título:</label>
+        <input type="text" name="titulo" id="titulo" placeholder="Ejemplo: Inception">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Mostrar errores -->
+    {% if mensaje_error %}
+        <p class="error">{{ mensaje_error }}</p>
+    {% endif %}
+
+    <!-- Mostrar resultados por plataforma -->
+    {% if resultado %}
+        <h2>Las 10 películas más valoradas en la plataforma seleccionada:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Valoración</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pelicula in resultado %}
+                    <tr>
+                        <td>{{ pelicula['Title'] }}</td>
+                        <td>{{ pelicula['Valoracion'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <!-- Mostrar resultados por título -->
+    {% if plataformas_pelicula %}
+        <h2>Plataformas donde está disponible la película:</h2>
+        <p>{{ plataformas_pelicula | join(', ') }}</p>
+    {% endif %}
+</body>
+</html>
