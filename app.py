@@ -4,8 +4,9 @@ import pandas as pd
 app = Flask(__name__)
 
 # Cargar el archivo CSV
-lectura_csv = pd.read_csv("MoviesOnStreamingPlatforms.csv", 
-                          usecols=['Title', 'Valoracion', 'Age', 'Netflix', 'Hulu', 'Prime Video', 'Disney+'])
+lectura_csv = pd.read_csv("df_stream_kaggle.csv", 
+                          usecols=['title','description','release_year','runtime','genres','production_countries',
+                                   'imdb_score', 'tmdb_score','streaming_service','name','primaryName'])
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
