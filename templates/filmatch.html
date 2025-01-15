@@ -40,15 +40,9 @@
 
     <!-- Formulario para buscar películas por plataforma -->
     <form method="POST">
-        <label for="plataforma">Elige tu plataforma favorita:</label>
-        <select name="plataforma" id="plataforma">
-            <option value="">--Seleccionar--</option>
-            <option value="Netflix">Netflix</option>
-            <option value="Hulu">Hulu</option>
-            <option value="Prime Video">Prime Video</option>
-            <option value="Disney+">Disney+</option>
-        </select>
-        <button type="submit">Consultar</button>
+        <label for="plataforma">Elige tu plataforma favorita y te recomendaremos las 10 peliculas mejor valoradas según la población:</label>
+        <input type="text" name="plataforma" id="plataforma" placeholder="Ejemplo: Netflix">
+        <button type="submit">Buscar</button>
     </form>
 
     <!-- Formulario para buscar películas por título -->
@@ -70,14 +64,22 @@
             <thead>
                 <tr>
                     <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Género</th>
+                    <th>Año</th>
+                    <th>Duración (min)</th>
                     <th>Valoración</th>
                 </tr>
             </thead>
             <tbody>
                 {% for pelicula in resultado %}
                     <tr>
-                        <td>{{ pelicula['Title'] }}</td>
-                        <td>{{ pelicula['Valoracion'] }}</td>
+                        <td>{{ pelicula['title'] }}</td>
+                        <td>{{ pelicula['description'] }}</td>
+                        <td>{{ pelicula['genres'] }}</td>
+                        <td>{{ pelicula['release_year'] }}</td>
+                        <td>{{ pelicula['runtime'] }}</td>
+                        <td>{{ pelicula['imdb_score'] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
