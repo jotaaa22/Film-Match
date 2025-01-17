@@ -4,7 +4,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Cargar el archivo CSV
-lectura_csv = pd.read_csv("filmatch.csv..csv",
+lectura_csv = pd.read_csv("filmatch.csv",
                           usecols=['title','description','release_year','runtime','genres','production_countries',
                                    'imdb_score', 'tmdb_score','streaming_service','name','primaryName'])
 
