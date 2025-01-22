@@ -1,0 +1,177 @@
+/* Fuentes personalizadas */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Fondo y esquema general */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+header h1 {
+    text-align: center;
+    color: #ff4d4d;
+    font-size: 4em;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ff4d4d, #ff6666, #ff4d4d);
+    -webkit-background-clip: text; /* For WebKit browsers (e.g., Chrome, Safari) */
+    background-clip: text; /* Standard property for other browsers */
+    color: transparent; /* To make the text take the gradient */
+    text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff6666;
+    letter-spacing: 3px;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+form label {
+    font-size: 1.2em;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+input, button {
+    padding: 12px 15px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+input {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+}
+
+button {
+    background-color: #ff4d4d;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #e60000;
+    transform: scale(1.05);
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+th {
+    background-color: #333;
+    color: #ff4d4d;
+    text-transform: uppercase;
+    font-size: 1.1em;
+}
+
+td {
+    background-color: #222;
+    color: #ddd;
+    font-size: 0.95em;
+}
+
+/* Descripciones truncadas */
+.description {
+    color: #bbb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+}
+
+.description:hover {
+    color: #ff4d4d;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+footer a {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Botón 'Leer más' */
+.read-more {
+    color: #ff4d4d;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.read-more:hover {
+    color: #e60000;
+    font-weight: bold;
+}
+.platform-container {
+    display: flex; /* Apila los elementos horizontalmente */
+    flex-wrap: wrap; /* Permite que las imágenes salten a la siguiente línea si son demasiadas */
+    gap: 15px; /* Espacio entre las imágenes */
+    justify-content: center; /* Centra las imágenes horizontalmente */
+    align-items: center; /* Alinea las imágenes verticalmente */
+}
+
+.platform-image {
+    width: 100px;  /* Tamaño estándar para todas las imágenes */
+    height: 100px; /* Tamaño estándar para todas las imágenes */
+    object-fit: contain; /* Mantiene la proporción */
+    border-radius: 10px; /* Opcional: esquinas redondeadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Opcional: sombra para destacar */
+}
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5em;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+
+    input, button {
+        font-size: 0.9em;
+    }
+}
