@@ -4,39 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FilmMatch</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+    <!-- <link rel="stylesheet" href="templates/style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.0">
+
+    
 </head>
 <body>
-    <h1>FILMATCH</h1>
+    <header>
+        <h1>FILMATCH</h1>
+    </header>
 
     <!-- Formulario para buscar películas por plataforma -->
     <form method="POST">
@@ -52,6 +28,14 @@
         <button type="submit">Buscar</button>
     </form>
 
+    <!-- Formulario para calcular películas según la edad -->
+    <form method="POST" class="form-edad">
+        <label for="edad">¿Qué edad tienes? Te recomendaremos películas según tu año de nacimiento:</label>
+        <input type="number" name="edad" id="edad" placeholder="Ejemplo: 25" min="1">
+        <button type="submit">Buscar</button>
+    </form>
+    
+
     <!-- Mostrar errores -->
     {% if mensaje_error %}
         <p class="error">{{ mensaje_error }}</p>
@@ -63,6 +47,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Portada</th>
                     <th>Título</th>
                     <th>Descripción</th>
                     <th>Género</th>
@@ -74,8 +59,13 @@
             <tbody>
                 {% for pelicula in resultado %}
                     <tr>
+                        <td> <img src="{{ pelicula['poster_url'] }}" alt="Portada de {{ pelicula['title'] }}" style="width:100px; height:auto;"> </td>
                         <td>{{ pelicula['title'] }}</td>
-                        <td>{{ pelicula['description'] }}</td>
+                        <td class="descripcion">
+                            <p class="descripcion-corta" data-short="{{ pelicula['description'] | truncatewords(15) }}" 
+                               data-extend="{{ pelicula['description'] }}" >{{ pelicula['description'] | truncatewords(15) }}</p>
+                            <button class="leer-mas">Leer más</button>
+                        </td>
                         <td>{{ pelicula['genres'] }}</td>
                         <td>{{ pelicula['release_year'] }}</td>
                         <td>{{ pelicula['runtime'] }}</td>
@@ -88,8 +78,57 @@
 
     <!-- Mostrar resultados por título -->
     {% if plataformas_pelicula %}
-        <h2>Plataformas donde está disponible la película:</h2>
-        <p>{{ plataformas_pelicula | join(', ') }}</p>
+    <h2>Plataformas donde está disponible la película:</h2>
+    <div class="platform-container">
+        {% for plataforma in plataformas_pelicula %}
+            <div>
+                <img src="{{ plataforma.image }}" alt="{{ plataforma.name }}" class="platform-image">
+                <p style="text-align: center; margin-top: 5px;">{{ plataforma.name }}</p>
+            </div>
+        {% endfor %}
+    </div>
     {% endif %}
+
+    <!-- Mostrar resultados según la edad -->
+    {% if peliculas_por_edad %}
+    <h2>Películas recomendadas basadas en tu año de nacimiento:</h2>
+    <table class="tabla-edad">
+        <thead>
+            <tr>
+                <th>Portada</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Género</th>
+                <th>Año</th>
+                <th>Duración (min)</th>
+                <th>Valoración</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pelicula in peliculas_por_edad %}
+                <tr>
+                    <td><img src="{{ pelicula['poster_url'] }}" alt="Portada de {{ pelicula['title'] }}" style="width:100px; height:auto;"></td>
+                    <td>{{ pelicula['title'] }}</td>
+                    <td class="descripcion">
+                        <p class="descripcion-corta" data-short="{{ pelicula['description'] | truncatewords(15) }}" 
+                           data-extend="{{ pelicula['description'] }}" >{{ pelicula['description'] | truncatewords(15) }}</p>
+                        <button class="leer-mas">Leer más</button>
+                    </td>
+                    <td>{{ pelicula['genres'] }}</td>
+                    <td>{{ pelicula['release_year'] }}</td>
+                    <td>{{ pelicula['runtime'] }}</td>
+                    <td>{{ pelicula['imdb_score'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+    <footer>
+        <p>Hecho por Facundo, Jonathan y Sergio. <a href="#">Contáctanos</a></p>
+    </footer>
+   
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
