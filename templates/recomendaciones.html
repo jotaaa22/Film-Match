@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones Personalizadas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style2.css') }}">
+</head>
+<body>
+    <header>
+        <h1>RECOMENDADOR DE FILMACTCH</h1>
+    </header>
+
+    <div class="volver">
+        <a href="{{ url_for('filmatch') }}" class="volver-boton">Volver al Buscador</a>
+    </div>
+    <div class="container">
+        <form method="POST" action="{{ url_for('recomendaciones') }}">
+            <label for="genero">Género:</label>
+            <select id="genero" name="genero" required>
+                <option value="">Selecciona un género</option>
+                {% for genero in generos %}
+                <option value="{{ genero }}">{{ genero }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="pelicula_favorita">Película Favorita:</label>
+            <input type="text" id="pelicula_favorita" name="pelicula_favorita" placeholder="Escribe tu película favorita" required>
+
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" placeholder="Ingresa tu edad" required>
+
+            <label for="plataformas">Plataformas:</label>
+            <div>
+                {% for plataforma in plataformas %}
+                <label>
+                    <input type="checkbox" name="plataformas" value="{{ plataforma }}"> {{ plataforma }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="submit-button">Obtener Recomendaciones</button>
+        </form>
+
+        {% if mensaje_error %}
+        <div class="error">
+            <p>{{ mensaje_error }}</p>
+        </div>
+        {% endif %}
+
+        {% if recomendaciones %}
+        <h2>Recomendaciones:</h2>
+        <div class="recomendaciones">
+            {% for recomendacion in recomendaciones %}
+            <div class="recomendacion">
+                <img src="{{ recomendacion['poster_url'] }}" alt="{{ recomendacion['title'] }}">
+                <h3>{{ recomendacion['title'] }}</h3>
+                <p>Score: {{ recomendacion['imdb_score'] }}</p>
+                
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

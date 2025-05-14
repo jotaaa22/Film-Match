@@ -159,6 +159,21 @@ footer a:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Opcional: sombra para destacar */
 }
 
+.boton-recomendaciones, .boton-volver {
+    display: inline-block;
+    margin: 20px 0;
+    padding: 10px 20px;
+    background-color: #ff6f61;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.boton-recomendaciones:hover, .boton-volver:hover {
+    background-color: #ff3f31;
+}
 
 /* Responsivo */
 @media (max-width: 768px) {
