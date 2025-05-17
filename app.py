@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 # Configuración básica
 app.secret_key = secrets.token_hex(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\jonat\Filmatch\data\usuarios.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/filmatch_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # API Key de OMDb
@@ -25,7 +26,7 @@ class usuarios(db.Model):
     busquedas_recientes = db.Column(db.Text, nullable=True)
 
 # Leer archivo CSV de películas
-lectura_csv = pd.read_csv("filmatch.csv", encoding = 'latin1', 
+lectura_csv = pd.read_csv("filmatch.csv", encoding = 'utf-8', 
                           usecols=['title', 'description', 'release_year', 'runtime', 
                                    'genres', 'production_countries', 
                                    'score', 'streaming_service','main_genre'])
