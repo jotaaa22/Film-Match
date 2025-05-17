@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Configuración básica
 app.secret_key = secrets.token_hex(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\admin\OneDrive\Escritorio\Proyecto_1\data\usuarios.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\jonat\Filmatch\data\usuarios.db'
 db = SQLAlchemy(app)
 
 # API Key de OMDb
@@ -25,17 +25,17 @@ class usuarios(db.Model):
     busquedas_recientes = db.Column(db.Text, nullable=True)
 
 # Leer archivo CSV de películas
-lectura_csv = pd.read_csv("df_stream_kaggle.csv", 
+lectura_csv = pd.read_csv("filmatch.csv", encoding = 'latin1', 
                           usecols=['title', 'description', 'release_year', 'runtime', 
-                                   'genres', 'production_countries', 'imdb_score', 
-                                   'tmdb_score', 'streaming_service','main_genre'])
+                                   'genres', 'production_countries', 
+                                   'score', 'streaming_service','main_genre'])
 
 
 # Configurar el modelo de recomendaciones
 calificaciones_df = pd.DataFrame({
     'userId': [1] * len(lectura_csv),
     'title': lectura_csv['title'],
-    'rating': lectura_csv['imdb_score']
+    'rating': lectura_csv['score']
 })
 reader = Reader(rating_scale=(1, 10))
 dataset = Dataset.load_from_df(calificaciones_df[['userId', 'title', 'rating']], reader)
@@ -142,7 +142,7 @@ def obtener_recomendaciones_por_preferencias(genero, pelicula_favorita, edad, pl
         peliculas_recomendadas = peliculas_filtradas.sort_values(by='predicted_score', ascending=False)
     else:
         # Si no se encuentra la película favorita, ordenamos las películas por IMDB score
-        peliculas_recomendadas = peliculas_filtradas.sort_values(by='imdb_score', ascending=False)
+        peliculas_recomendadas = peliculas_filtradas.sort_values(by='score', ascending=False)
 
     # Seleccionar las mejores películas y preparar el resultado
     recomendaciones = []
@@ -150,7 +150,7 @@ def obtener_recomendaciones_por_preferencias(genero, pelicula_favorita, edad, pl
         recomendaciones.append({
             'title': fila['title'],
             'genres': fila['genres'],
-            'imdb_score': fila['imdb_score'],
+            'score': fila['score'],
             'poster_url': obtener_url_portada(fila['title']) or '/static/imagenes/Imagen_por_defecto.jpg',
             'streaming_service': fila['streaming_service'],
         })
@@ -188,13 +188,13 @@ def filmatch():
                 if edad > 0:
                     anio_nacimiento = pd.Timestamp.now().year - edad
                     anios_interes = [anio_nacimiento + 10, anio_nacimiento + 15, anio_nacimiento + 20]
-                    peliculas_por_edad = lectura_csv[lectura_csv['release_year'].isin(anios_interes)].sort_values(by='imdb_score', ascending=False).head(10)
+                    peliculas_por_edad = lectura_csv[lectura_csv['release_year'].isin(anios_interes)].sort_values(by='score', ascending=False).head(10)
                     peliculas_por_edad = [{
                             'poster_url': obtener_url_portada(fila['title']) or '/static/imagenes/Imagen_por_defecto.jpg',  # Imagen por defecto
                             'title': fila['title'],
                             'description': fila['description'],
                             'runtime': fila['runtime'],
-                            'imdb_score': fila['imdb_score'],
+                            'score': fila['score'],
                              'release_year' : fila[ 'release_year']
                     } for _, fila in peliculas_por_edad.iterrows()]
             except ValueError:
@@ -208,7 +208,7 @@ def filmatch():
                 peliculas_en_plataforma = lectura_csv[lectura_csv['streaming_service'].str.contains(plataforma, case=False, na=False)]
                 if not peliculas_en_plataforma.empty:
                     resultado = []
-                    for _, fila in peliculas_en_plataforma.sort_values(by='imdb_score', ascending=False).head(10).iterrows():
+                    for _, fila in peliculas_en_plataforma.sort_values(by='score', ascending=False).head(10).iterrows():
                         titulo = fila['title']
                         poster_url = obtener_url_portada(fila['title'])
                         resultado.append({
@@ -216,7 +216,7 @@ def filmatch():
                             'title': fila['title'],
                             'description': fila['description'],
                             'runtime': fila['runtime'],
-                            'imdb_score': fila['imdb_score'],
+                            'score': fila['score'],
                             'release_year' : fila[ 'release_year']
 
                             

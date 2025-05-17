@@ -1,142 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FilmMatch</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
-    <header>
-        <h1>FILMATCH</h1>
-    </header>
-    <div class="acciones">
-        <a href="{{ url_for('recomendaciones') }}" class="boton-recomendaciones">Ir a Recomendaciones</a>
-    </div>
-
-    <!-- Formulario para buscar películas por título -->
-    <form method="POST">
-        <label for="titulo">Busca una película por título:</label>
-        <input type="text" name="titulo" id="titulo" placeholder="Ejemplo: Inception">
-        <button type="submit">Buscar</button>
-    </form>
-
-    <!-- Formulario para calcular películas según la edad -->
-    <form method="POST" class="form-edad">
-        <label for="edad">¿Qué edad tienes? Te recomendaremos películas según tu año de nacimiento:</label>
-        <input type="number" name="edad" id="edad" placeholder="Ejemplo: 25" min="1">
-        <button type="submit">Buscar</button>
-    </form>
-     <!-- Formulario para buscar películas por plataforma -->
-     <form method="POST">
-        <h2>Buscar por Plataforma</h2>
-        {% for plataforma in plataformas %}
-            <button type="submit" name="plataforma" value="{{ plataforma }}" class="plataforma-btn">
-                {{ plataforma }}
-            </button>
-        {% endfor %}
-    </form>
-    
-    
-
-    <!-- Mostrar errores -->
-    {% if mensaje_error %}
-        <p class="error">{{ mensaje_error }}</p>
-    {% endif %}
-
-    <!-- Mostrar resultados por título -->
-{% if plataformas_pelicula %}
-<h2>Plataformas donde está disponible:</h2>
-<div class="platform-container">
-    {% for plataforma in plataformas_pelicula %}
-        <div class="platform-item">
-            <img src="{{ plataforma.image }}" alt="Logo de {{ plataforma.name }}" class="platform-image">
-            <p>{{ plataforma.name }}</p>
+    <div class="container">
+        <div class="left">
+            <img src="{{ url_for('static', filename='imagenes/login_foto.webp') }}" alt="FilMatch Logo">
         </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-    <!-- Mostrar resultados según la edad -->
-    {% if peliculas_por_edad %}
-        <h2>Películas recomendadas basadas en tu año de nacimiento:</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Portada</th>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Duración (min)</th>
-                    <th>Valoración</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for pelicula in peliculas_por_edad %}
-                    <tr>
-                        <td> <img src="{{ pelicula['poster_url'] }}" alt="Portada de{{ pelicula['title'] }}" style="width:100px; height:auto;"> </td>
-                        <td>{{ pelicula['title'] }}</td>
-                        <td class="descripcion">
-                            <p class="descripcion-corta" data-short="{{ pelicula['description'] | truncatewords(15) }}" 
-                               data-extend="{{ pelicula['description'] }}" >{{ pelicula['description'] | truncatewords(15) }}</p>
-                            <button class="leer-mas">Leer más</button>
-                        </td>
-                        <td>{{ pelicula['runtime'] }}</td>
-                        <td>{{ pelicula['imdb_score'] }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
- <!-- Mostrar resultados según la plataforma -->
-    {% if resultado %}
-    <h2>Películas de la Plataforma</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Portada</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Duración (min)</th>
-                <th>Valoración</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pelicula in resultado %}
-                <tr>
-                    <td> <img src="{{ pelicula['poster_url'] }}" alt="Portada de {{ pelicula['title'] }}" style="width:100px; height:auto;"> </td>
-                    <td>{{ pelicula['title'] }}</td>
-                    <td class="descripcion">
-                        <p class="descripcion-corta" data-short="{{ pelicula['description'] | truncatewords(15) }}" 
-                           data-extend="{{ pelicula['description'] }}" >{{ pelicula['description'] | truncatewords(15) }}</p>
-                        <button class="leer-mas">Leer más</button>
-                    </td>
-                    <td>{{ pelicula['runtime'] }}</td>
-                    <td>{{ pelicula['imdb_score'] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
-
-<!-- Mostrar recomendaciones personalizadas -->
-<!-- {% if recomendaciones %}
-    <h2>Recomendaciones para ti:</h2>
-    <div class="recomendaciones-container">
-        {% for pelicula in recomendaciones %}
-            <div class="recomendacion">
-                <img src="{{ pelicula.poster_url }}" alt="{{ pelicula.title }}">
-                <h3>{{ pelicula.title }}</h3>
-                <p><strong>Score:</strong> {{ pelicula.imdb_score }}</p>
-            </div>
-        {% endfor %}
+        <div class="right">
+            <h2>Iniciar sesión</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Nombre de usuario:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-button">Iniciar sesión</button>
+            </form>
+            <p class="redirect">¿Aún no tienes cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
+        </div>
     </div>
-{% endif %} -->
-
-    <footer>
-        <p>Hecho por Facundo, Jonathan y Sergio. <a href="#">Contáctanos</a></p>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
